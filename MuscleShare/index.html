@@ -56,6 +56,37 @@
       background-color: #d1d100;
       color: #000;
     }
+
+    /* ⚡️ 稲妻ボタン */
+    .thunder-button {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 16px 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #000;
+      background: linear-gradient(135deg, #fff700, #ffe600, #fff700);
+      border: 2px solid #fff700;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
+      text-decoration: none;
+      animation: flash 2s infinite ease-in-out;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+
+    .thunder-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(255, 255, 0, 0.8);
+    }
+
+    @keyframes flash {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 255, 0, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 40px rgba(255, 255, 0, 1);
+      }
+    }
   </style>
 </head>
 <body>
@@ -73,11 +104,17 @@
       </p>
     </section>
 
-    
-  </main>
-</body>
-</html>
-
+    <!-- ⚡️ App Storeボタン -->
+    <div style="text-align: center;">
+      <a
+        href="https://apps.apple.com/jp/app/muscle-share/id6743065400"
+        class="thunder-button"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ⚡ App Storeでダウンロード
+      </a>
+    </div>
   </main>
 </body>
 </html>
