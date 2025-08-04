@@ -49,11 +49,35 @@
       opacity: 0.9;
     }
 
-    .blue { background-color: #2196f3; }    /* 青 */
-    .green { background-color: #4caf50; }   /* 緑 */
-    .purple { background-color: #9c27b0; }  /* 紫 */
-    .yellow { background-color: #ffeb3b; color: #000; } /* 黄色 */
+    .blue { background-color: #2196f3; }
+    .green { background-color: #4caf50; }
+    .purple { background-color: #9c27b0; }
+    .yellow { background-color: #ffeb3b; color: #000; }
 
+    /* お問い合わせボタン */
+    .contact-button {
+      margin-top: 40px;
+      padding: 16px 32px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 30px;
+      background: linear-gradient(270deg, #00c6ff, #0072ff, #00c6ff);
+      background-size: 600% 600%;
+      animation: wave 6s ease infinite;
+      box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+    }
+
+    .contact-button:hover {
+      opacity: 0.85;
+    }
+
+    @keyframes wave {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
   </style>
 </head>
 <body>
@@ -66,6 +90,13 @@
     <a href="./mbti/" class="app-button green">グループ相性診断</a>
     <a href="./nazokake/" class="app-button purple">なぞかけあぷり</a>
     <a href="./MuscleShare/" class="app-button yellow">Muscle Share</a>
+
+    <!-- 🔽 お問い合わせボタン -->
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link"
+       class="contact-button"
+       target="_blank">
+      📩 お問い合わせ
+    </a>
   </main>
 </body>
 </html>
