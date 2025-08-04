@@ -87,6 +87,41 @@
         box-shadow: 0 0 40px rgba(255, 255, 0, 1);
       }
     }
+    .thunder-heading {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fff700;
+  text-shadow: 
+    0 0 10px #fff700,
+    0 0 20px #fff700,
+    0 0 40px #ff0,
+    0 0 80px #ff0;
+  animation: flicker 1.5s infinite ease-in-out;
+  margin: 60px 0;
+}
+
+@keyframes flicker {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    text-shadow:
+      0 0 10px #fff700,
+      0 0 20px #fff700,
+      0 0 40px #ff0,
+      0 0 80px #ff0;
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.02) rotate(-1deg);
+    text-shadow:
+      0 0 5px #fff700,
+      0 0 10px #fff700,
+      0 0 20px #ff0,
+      0 0 30px #ff0;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -95,14 +130,26 @@
   </header>
 
   <main>
+    <div class="thunder-heading">みなぎる力を感じろ</div>
+
     <section id="overview">
-      <h2>アプリ概要</h2>
-      <p>
-        <strong>Muscle Share</strong>は、トレーニング中の写真やトレーニング記録を仲間と共有できるアプリです。
-        トレーニングの成果をビジュアルで記録し、他のユーザーとモチベーションを高め合うことができます。
-        また、ベスト記録の管理やグラフによる進捗確認、テンプレート機能なども充実しています。
-      </p>
-    </section>
+  <h2>アプリ概要</h2>
+  <p>
+    <strong>Muscle Share</strong>は、トレーニング中の写真や記録を、仲間とシェアしてモチベーションを高め合えるアプリです。
+    <br><br>
+    1人で記録するだけでなく、「今日はこのメニューをやったよ！」という情報をコメント付きで投稿することで、
+    仲間同士の刺激になります。
+    <br><br>
+    トレーニングの<strong>成果をビジュアルで残し</strong>、<strong>ベスト記録を管理</strong>したり、
+    <strong>進捗をグラフで確認</strong>することもできるため、自分の成長がひと目で分かります。
+    <br><br>
+    また、共有された記録を通じて「今日は誰が頑張ったのか」や「一緒に筋トレしたい仲間」も見つけやすくなり、
+    トレーニングがより楽しく、継続しやすくなります。
+    <br><br>
+    グループで高め合いたいあなたに、<strong>最強の筋トレSNSツール</strong>です。
+  </p>
+</section>
+
 
     <!-- ⚡️ App Storeボタン -->
     <div style="text-align: center;">
