@@ -71,6 +71,11 @@
     .hero{padding:56px 0 10px}
     .hero h1{margin:0;font-size:clamp(26px,5vw,44px);line-height:1.08}
     .hero p{margin:12px 0 20px;color:var(--muted)}
+    .catchcopy{font-weight:900;font-size:clamp(18px,3.8vw,28px);
+      background:linear-gradient(90deg,#7dd3fc,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;
+      letter-spacing:.02em;margin-top:10px}
+
+    
 
     .cta-row{display:flex;gap:12px;flex-wrap:wrap}
     .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:14px;font-weight:800;text-decoration:none;color:#fff;background:var(--cta);box-shadow:0 14px 28px rgba(38,97,214,.35),inset 0 1px 0 rgba(255,255,255,.18);transform:translateY(0);transition:transform .16s ease,box-shadow .2s ease}
@@ -118,6 +123,14 @@
 
     /* interaction */
     .card[data-tilt]{transform-style:preserve-3d}
+  
+    /* Mobile-friendly header CTAs */
+    @media (max-width: 720px){
+      .nav{flex-direction:column;align-items:stretch;gap:10px;height:auto;padding:10px 0}
+      .brand{justify-content:center}
+      .cta-row{width:100%;flex-direction:column}
+      .btn{width:100%;justify-content:center;font-size:16px;padding:14px 16px;border-radius:12px}
+    }
   </style>
 </head>
 <body>
@@ -127,21 +140,7 @@
         <div class="logo" aria-hidden="true"></div>
         <div>りょへとそたのアプリ製作所</div>
       </div>
-      <div class="cta-row">
-        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link" target="_blank" rel="noopener">📩 お問い合わせ</a>
-        <a class="btn alt" href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link" target="_blank" rel="noopener">🧩 アプリ作成のご依頼</a>
-      </div>
-    </div>
-  </header>
-
-  <main class="container">
-    <section class="hero">
-      <h1>小さなチームがつくる、<br>やさしいアプリ。</h1>
-      <p>プロダクトの企画からUI、公開まで。グッとくる体験を、スピーディに。</p>
-      <div class="cta-row">
-        <a class="btn" href="./Minwari/">🚀 プロダクトを見る</a>
-        <a class="btn alt" href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link" target="_blank" rel="noopener">🧾 お見積りのご相談</a>
-      </div>
+      <div class="catchcopy">小さなチームが作る、やさしいアプリ</div>
     </section>
 
     <section class="apps">
