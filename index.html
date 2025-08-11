@@ -4,99 +4,208 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>りょへとそたのアプリ製作所</title>
+  <meta name="color-scheme" content="dark light">
   <style>
-    body {
-      background-color: #000;
-      color: #fff;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      text-align: center;
+    /* ===============================
+       Design Tokens
+    =============================== */
+    :root{
+      --bg:#07080c;                 /* page */
+      --bg-2:#0b0e17;               /* section */
+      --text:#e9ecf3;               /* main text */
+      --muted:#a6b0c3;              /* secondary text */
+      --glass:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.14);
+      --ring:rgba(118, 186, 255, .45);
+      --shadow-1:0 10px 30px rgba(0,0,0,.35);
+      --shadow-2:0 40px 80px rgba(0,0,0,.45);
+      --radius-xl:18px; --radius-2xl:26px;
+      --grad-1:linear-gradient(135deg,#7dd3fc,#60a5fa 40%,#a78bfa);
+      --grad-2:linear-gradient(135deg,#34d399,#22c55e 40%,#16a34a);
+      --grad-3:linear-gradient(135deg,#a78bfa,#8b5cf6 40%,#7c3aed);
+      --grad-4:linear-gradient(135deg,#fde047,#f59e0b 40%,#f97316);
+      --cta:linear-gradient(180deg,#4f8df7,#2661d6);
+      --cta-press:#2558bd;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7f9ff; --bg-2:#ecf2ff; --text:#0c1222; --muted:#57627a;
+        --glass:rgba(255,255,255,.7); --stroke:rgba(13,26,64,.12);
+        --shadow-1:0 12px 28px rgba(15,25,55,.18);
+        --shadow-2:0 40px 80px rgba(15,25,55,.20);
+      }
     }
 
-    header {
-      padding: 40px 20px 20px;
-      background-color: #111;
+    /* ===============================
+       Base
+    =============================== */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 500px at 10% -10%, rgba(96,165,250,.18), transparent 40%),
+        radial-gradient(1000px 500px at 110% 0%, rgba(167,139,250,.16), transparent 40%),
+        linear-gradient(180deg,var(--bg),var(--bg-2));
+      overflow-x:hidden;
     }
+    /* soft grid overlay */
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+      background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+      background-size:38px 38px;mask-image:radial-gradient(900px 900px at 50% 0%,#000,transparent 70%)}
 
-    header h1 {
-      font-size: 2.2rem;
-      margin: 0;
-      color: #fff;
-    }
+    .container{max-width:1100px;margin-inline:auto;padding:0 24px}
 
-    main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
-    }
+    /* ===============================
+       Header / Hero
+    =============================== */
+    header{position:sticky;top:0;z-index:50;backdrop-filter:saturate(160%) blur(14px);
+      background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02));
+      border-bottom:1px solid var(--stroke)}
 
-    .app-button {
-      width: 250px;
-      margin: 20px;
-      padding: 20px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 12px;
-      transition: transform 0.2s, opacity 0.3s;
-    }
+    .nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.02em}
+    .logo{width:42px;height:42px;border-radius:12px;background:conic-gradient(from 220deg,#60a5fa,#a78bfa,#60a5fa);box-shadow:0 10px 25px rgba(96,165,250,.35),inset 0 1px 0 rgba(255,255,255,.3)}
 
-    .app-button:hover {
-      transform: translateY(-4px);
-      opacity: 0.9;
-    }
+    .hero{padding:56px 0 10px}
+    .hero h1{margin:0;font-size:clamp(26px,5vw,44px);line-height:1.08}
+    .hero p{margin:12px 0 20px;color:var(--muted)}
 
-    .blue { background-color: #2196f3; }
-    .green { background-color: #4caf50; }
-    .purple { background-color: #9c27b0; }
-    .yellow { background-color: #ffeb3b; color: #000; }
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:14px;font-weight:800;text-decoration:none;color:#fff;background:var(--cta);box-shadow:0 14px 28px rgba(38,97,214,.35),inset 0 1px 0 rgba(255,255,255,.18);transform:translateY(0);transition:transform .16s ease,box-shadow .2s ease}
+    .btn:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(38,97,214,.45)}
+    .btn:active{transform:translateY(1px);background:var(--cta-press)}
+    .btn.alt{background:linear-gradient(180deg,#34d399,#16a34a)}
 
-    /* お問い合わせボタン */
-    .contact-button {
-      margin-top: 40px;
-      padding: 16px 32px;
-      font-size: 1rem;
-      font-weight: bold;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 30px;
-      background: linear-gradient(270deg, #00c6ff, #0072ff, #00c6ff);
-      background-size: 600% 600%;
-      animation: wave 6s ease infinite;
-      box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
-    }
+    /* ===============================
+       App Grid
+    =============================== */
+    .apps{padding:30px 0 8px}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    @media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:560px){.grid{grid-template-columns:1fr}}
 
-    .contact-button:hover {
-      opacity: 0.85;
-    }
+    .card{position:relative;border-radius:var(--radius-2xl);overflow:hidden;padding:18px 16px;background:var(--glass);border:1px solid var(--stroke);box-shadow:var(--shadow-1);transition:transform .15s ease, box-shadow .2s ease}
+    .card:hover{transform:translateY(-4px);box-shadow:0 24px 48px rgba(0,0,0,.45)}
+    .card::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(400px 160px at var(--x,20%) var(--y,20%), rgba(255,255,255,.12), transparent 40%)}
 
-    @keyframes wave {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+    .badge{display:inline-flex;align-items:center;gap:8px;font-weight:800;border-radius:999px;padding:10px 12px;color:#0b0e17;background:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 12px 24px rgba(0,0,0,.25)}
+    .badge i{font-style:normal}
+
+    .meta{margin-top:14px;color:var(--muted);font-size:14px;line-height:1.6}
+    .go{display:inline-flex;margin-top:14px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.14);color:#fff;text-decoration:none;font-weight:700;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.2)}
+
+    .g1{background:linear-gradient(180deg, rgba(96,165,250,.18), transparent)}
+    .g2{background:linear-gradient(180deg, rgba(34,197,94,.18), transparent)}
+    .g3{background:linear-gradient(180deg, rgba(168,85,247,.18), transparent)}
+    .g4{background:linear-gradient(180deg, rgba(250,204,21,.22), transparent)}
+
+    /* ===============================
+       Contact / Request Section
+    =============================== */
+    .cta-section{padding:40px 0 60px}
+    .cta-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:800px){.cta-wrap{grid-template-columns:1fr}}
+    .cta-card{border-radius:var(--radius-2xl);background:var(--glass);border:1px solid var(--stroke);box-shadow:var(--shadow-1);padding:22px}
+    .cta-card h3{margin:0 0 8px}
+    .cta-card p{margin:0 0 14px;color:var(--muted)}
+
+    /* ===============================
+       Footer
+    =============================== */
+    footer{margin-top:24px;border-top:1px solid var(--stroke);background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));padding:22px 0;text-align:center;color:var(--muted)}
+
+    /* interaction */
+    .card[data-tilt]{transform-style:preserve-3d}
   </style>
 </head>
 <body>
   <header>
-    <h1>りょへとそたのアプリ製作所</h1>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>りょへとそたのアプリ製作所</div>
+      </div>
+      <div class="cta-row">
+        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link" target="_blank" rel="noopener">📩 お問い合わせ</a>
+        <a class="btn alt" href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link" target="_blank" rel="noopener">🧩 アプリ作成のご依頼</a>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <a href="./Minwari/" class="app-button blue">みんなでワリカン</a>
-    <a href="./mbti/" class="app-button green">グループ相性診断</a>
-    <a href="./nazokake/" class="app-button purple">なぞかけあぷり</a>
-    <a href="./MuscleShare/" class="app-button yellow">Muscle Share</a>
+  <main class="container">
+    <section class="hero">
+      <h1>小さなチームがつくる、<br>やさしいアプリ。</h1>
+      <p>プロダクトの企画からUI、公開まで。グッとくる体験を、スピーディに。</p>
+      <div class="cta-row">
+        <a class="btn" href="./Minwari/">🚀 プロダクトを見る</a>
+        <a class="btn alt" href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link" target="_blank" rel="noopener">🧾 お見積りのご相談</a>
+      </div>
+    </section>
 
-    <!-- 🔽 お問い合わせボタン -->
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link"
-       class="contact-button"
-       target="_blank">
-      📩 お問い合わせ
-    </a>
+    <section class="apps">
+      <div class="grid">
+        <article class="card g1" data-tilt>
+          <div class="badge"><i>📱</i> みんなでワリカン</div>
+          <p class="meta">旅行や遊びの割り勘をスマートに。固定メンバーで複数イベントを管理。</p>
+          <a class="go" href="./Minwari/">開く →</a>
+        </article>
+        <article class="card g2" data-tilt>
+          <div class="badge"><i>🧠</i> グループ相性診断</div>
+          <p class="meta">MBTIをもとにグループの相性/バランスを分析。レーダーチャートで可視化。</p>
+          <a class="go" href="./mbti/">開く →</a>
+        </article>
+        <article class="card g3" data-tilt>
+          <div class="badge"><i>🧩</i> なぞかけあぷり</div>
+          <p class="meta">お題とかけて…？ みんなのなぞかけでタイムラインが盛り上がる。</p>
+          <a class="go" href="./nazokake/">開く →</a>
+        </article>
+        <article class="card g4" data-tilt>
+          <div class="badge"><i>💪</i> Muscle Share</div>
+          <p class="meta">トレ記録・友だちの進捗も一目で。モチベを上げる筋トレSNS。</p>
+          <a class="go" href="./MuscleShare/">開く →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-wrap">
+        <div class="cta-card">
+          <h3>📩 お問い合わせはこちら</h3>
+          <p>機能のご質問や不具合のご連絡は、こちらのフォームからお気軽にどうぞ。</p>
+          <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link" target="_blank" rel="noopener">フォームを開く</a>
+        </div>
+        <div class="cta-card">
+          <h3>🧩 アプリ作成のご依頼はこちら</h3>
+          <p>企画/設計/開発/公開までワンストップで対応。要件やご予算の目安をお聞かせください。</p>
+          <a class="btn alt" href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link" target="_blank" rel="noopener">お見積りを依頼</a>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer>
+    &copy; 2025 りょへとそたのアプリ製作所
+  </footer>
+
+  <script>
+    // Lightweight 3D tilt for cards
+    const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+    document.querySelectorAll('[data-tilt]').forEach(el=>{
+      el.addEventListener('pointermove',e=>{
+        const r=el.getBoundingClientRect();
+        const px=(e.clientX-r.left)/r.width-.5; // -0.5..0.5
+        const py=(e.clientY-r.top)/r.height-.5;
+        const rx=clamp(-py*6,-8,8), ry=clamp(px*8,-10,10);
+        el.style.transform=`translateY(-4px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        el.style.setProperty('--x', (px*100+50)+'%');
+        el.style.setProperty('--y', (py*100+50)+'%');
+      });
+      el.addEventListener('pointerleave',()=>{
+        el.style.transform='translateY(0) rotateX(0) rotateY(0)';
+      });
+    });
+  </script>
 </body>
 </html>
