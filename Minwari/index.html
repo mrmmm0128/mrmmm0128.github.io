@@ -217,10 +217,37 @@
           </div>
         </div>
         <div class="hero-card tilt" data-tilt>
-          <div class="phone-mock">
-            <div class="phone-screen">みんなでワリカン</div>
-          </div>
-        </div>
+          <div class="phone-screen">
+  <svg viewBox="0 0 300 600" class="phone-img" aria-label="割り勘イメージ">
+    <defs>
+      <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+        <stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#a78bfa"/>
+      </linearGradient>
+    </defs>
+    <!-- 共同財布 -->
+    <circle cx="150" cy="170" r="58" fill="url(#g)" opacity="0.9"/>
+    <text x="150" y="178" fill="#0b0e17" font-size="34" font-weight="700" text-anchor="middle">¥</text>
+
+    <!-- 矢印 -->
+    <g stroke="#a6b0c3" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
+      <path d="M150 230 L150 320"/>
+      <path d="M150 230 C150 260, 230 260, 240 320"/>
+      <path d="M150 230 C150 260, 70 260, 60 320"/>
+      <!-- 矢印ヘッド -->
+      <path d="M150 320 l-10 -14 m10 14 l10 -14"/>
+      <path d="M240 320 l-10 -14 m10 14 l10 -14"/>
+      <path d="M60 320 l-10 -14 m10 14 l10 -14"/>
+    </g>
+
+    <!-- 受け取り側の人アイコン -->
+    <g fill="rgba(255,255,255,.9)">
+      <circle cx="150" cy="360" r="20"/><rect x="138" y="382" width="24" height="34" rx="8"/>
+      <circle cx="240" cy="360" r="20"/><rect x="228" y="382" width="24" height="34" rx="8"/>
+      <circle cx="60"  cy="360" r="20"/><rect x="48"  y="382" width="24" height="34" rx="8"/>
+    </g>
+  </svg>
+</div>
+
       </div>
     </section>
 
