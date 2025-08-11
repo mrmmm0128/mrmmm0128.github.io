@@ -3,160 +3,303 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>あなたのグループを診断します</title>
+  <title>グループ相性診断 – 16タイプで相性をスコア化</title>
+  <meta name="color-scheme" content="light dark">
   <style>
-    body {
-      background-color: #e8f5e9;
-      color: #1b5e20;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
+    /* ------------------------------
+       Design Tokens (Green Theme)
+    ------------------------------ */
+    :root {
+      --bg: #061a12;                 /* page base */
+      --bg-alt: #0a2419;             /* deeper */
+      --card: rgba(255,255,255,.08); /* glass */
+      --text: #eaffe7;
+      --muted: #cdecd2;
+      --brand-1: #51d18d;            /* lime-mint */
+      --brand-2: #27c052;            /* emerald */
+      --cta: #2e7d32;                /* button base */
+      --cta-press: #256729;
+      --ring: rgba(81, 209, 141, .55);
+      --shadow-1: 0 10px 30px rgba(8, 42, 25, .45);
+      --shadow-2: 0 30px 60px rgba(8, 42, 25, .55);
+      --radius-xl: 20px;
+      --radius-2xl: 28px;
     }
 
-    header {
-      background-color: #2e7d32;
-      color: #fff;
-      padding: 30px 20px;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2.2rem;
-    }
-
-    main {
-      padding: 40px 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    section {
-      margin-bottom: 50px;
-    }
-
-    h2 {
-      border-left: 6px solid #66bb6a;
-      padding-left: 10px;
-      font-size: 1.6rem;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1.1rem;
-      line-height: 1.7;
-    }
-
-    .feature {
-      background-color: #c8e6c9;
-      border-left: 4px solid #66bb6a;
-      padding: 16px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-    }
-
-    footer {
-      background-color: #2e7d32;
-      color: white;
-      text-align: center;
-      padding: 16px;
-    }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.6rem;
+    @media (prefers-color-scheme: light) {
+      :root{
+        --bg: #e8f5e9;     /* light mint */
+        --bg-alt: #dff3e7;
+        --card: rgba(255,255,255,.7);
+        --text: #0f261b;
+        --muted: #2e5b42;
+        --brand-1: #43a047;
+        --brand-2: #66bb6a;
+        --cta: #2e7d32;
+        --cta-press: #26682a;
+        --ring: rgba(102, 187, 106, .45);
       }
     }
-    .download-button {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 14px 30px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  background-color: #43a047;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(67, 160, 71, 0.4);
-  transition: transform 0.2s, background-color 0.3s, box-shadow 0.3s;
-}
 
-.download-button:hover {
-  background-color: #388e3c;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(67, 160, 71, 0.5);
-}
+    /* ------------------------------
+       Base & Layout
+    ------------------------------ */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+      color:var(--text);
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(81,209,141,.16), transparent),
+                  radial-gradient(900px 500px at 90% 0%, rgba(39,192,82,.14), transparent),
+                  linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+      overflow-x:hidden;
+    }
 
-.download-button:active {
-  transform: translateY(1px);
-  box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
-}
+    /* Subtle grid */
+    body::before{
+      content:""; position:fixed; inset:0; pointer-events:none; z-index:-1;
+      background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(900px 900px at 50% 0%, black, transparent 70%);
+    }
 
+    .container{max-width:1080px; margin-inline:auto; padding-inline:24px}
+
+    /* ------------------------------
+       Header / Hero
+    ------------------------------ */
+    header{ position:sticky; top:0; z-index:50; backdrop-filter: saturate(180%) blur(14px);
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; height:72px}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:900; letter-spacing:.02em}
+    .brand .logo{
+      width:42px; height:42px; border-radius:12px;
+      background: conic-gradient(from 210deg, var(--brand-1), var(--brand-2), var(--brand-1));
+      box-shadow: 0 10px 25px rgba(81,209,141,.35), inset 0 1px 0 rgba(255,255,255,.3);
+    }
+
+    .hero{position:relative; padding:56px 0 32px}
+    .hero-grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:28px; align-items:center}
+    @media (max-width: 880px){ .hero-grid{grid-template-columns:1fr; gap:22px} }
+
+    .title{font-size: clamp(28px, 5vw, 48px); line-height:1.12; margin:0 0 14px; font-weight:900}
+    .title span{ background: linear-gradient(90deg, var(--brand-1), var(--brand-2)); -webkit-background-clip:text; background-clip:text; color:transparent }
+    .subtitle{color:var(--muted); font-size: clamp(15px, 2.4vw, 18px); margin:0 0 26px}
+
+    .cta-row{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px; padding:14px 20px; border-radius:14px; font-weight:800; text-decoration:none; color:#fff;
+      background: linear-gradient(180deg, var(--cta), #20622a);
+      box-shadow: 0 12px 24px rgba(46,125,50,.35), inset 0 1px 0 rgba(255,255,255,.22);
+      transform: translateY(0); transition: transform .18s ease, box-shadow .2s ease;
+    }
+    .btn:hover{ transform: translateY(-3px); box-shadow: 0 18px 36px rgba(46,125,50,.45) }
+    .btn:active{ transform: translateY(1px); background: var(--cta-press); box-shadow: 0 8px 16px rgba(46,125,50,.32) }
+    .btn:focus-visible{ outline: none; box-shadow: 0 0 0 3px var(--ring) }
+
+    .hero-card{
+      position:relative; border-radius: var(--radius-2xl);
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: var(--shadow-2);
+      padding: 26px; overflow:hidden; transform-style: preserve-3d;
+    }
+    .hero-card::before{
+      content:""; position:absolute; inset:-2px; border-radius: inherit;
+      background: radial-gradient(800px 240px at 20% -10%, rgba(81,209,141,.28), transparent 40%),
+                  radial-gradient(700px 220px at 120% 0%, rgba(39,192,82,.22), transparent 40%);
+      z-index:0;
+    }
+
+    .phone-mock{
+      position:relative; z-index:1; width:100%; aspect-ratio: 9/19; border-radius: 34px; padding:18px; margin:auto;
+      background: linear-gradient(180deg, #0b1f17, #123524);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 20px 40px rgba(5,15,10,.6);
+      transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+      transition: transform .15s ease-out;
+    }
+    .phone-screen{
+      border-radius: 24px; height:100%; background:
+        radial-gradient(600px 300px at 20% -10%, rgba(81,209,141,.14), transparent 30%),
+        linear-gradient(180deg, #153c2a, #0f2e21);
+      border:1px solid rgba(255,255,255,.1);
+      display:flex; align-items:center; justify-content:center; color:#eafff2; font-weight:800; letter-spacing:.03em; position:relative;
+    }
+    /* Simple Radar-like SVG */
+    .phone-screen svg{ width:86%; height:auto; opacity:.95 }
+
+    /* ------------------------------
+       Sections
+    ------------------------------ */
+    section{ padding: 42px 0 }
+    h2{ font-size: clamp(22px, 3.2vw, 28px); margin:0 0 20px; font-weight:900; display:flex; align-items:center; gap:10px }
+    h2 .bar{ display:inline-block; width:10px; height:26px; border-radius:4px; background: linear-gradient(180deg, var(--brand-1), var(--brand-2)); box-shadow: 0 8px 20px rgba(81,209,141,.35) }
+    p{ color:var(--muted); font-size: clamp(15px, 2.4vw, 17px); line-height:1.8; margin:0 }
+
+    .feature-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:18px; margin-top:18px }
+    @media (max-width: 1000px){ .feature-grid{ grid-template-columns: repeat(2, 1fr) } }
+    @media (max-width: 560px){ .feature-grid{ grid-template-columns: 1fr } }
+
+    .feature{ position:relative; border-radius: 18px; padding:18px 16px; overflow:hidden; background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.14); box-shadow: var(--shadow-1); transform: translateZ(0); transition: transform .15s ease, box-shadow .2s ease }
+    .feature:hover{ transform: translateY(-4px); box-shadow: 0 16px 36px rgba(8, 42, 25, .55) }
+    .feature::after{ content:""; position:absolute; inset:0; pointer-events:none; background: radial-gradient(400px 160px at var(--x, 20%) var(--y, 20%), rgba(81,209,141,.25), transparent 40%); opacity:.9; transition: background-position .08s linear }
+    .feat-title{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.02em; margin-bottom:8px }
+    .badge{ font-size:12px; padding:4px 8px; border-radius:999px; background: rgba(81,209,141,.18); border:1px solid rgba(81,209,141,.35); color:#eaffe7 }
+
+    .steps{ display:grid; grid-template-columns: repeat(3, 1fr); gap:18px }
+    @media (max-width: 900px){ .steps{ grid-template-columns: 1fr } }
+    .step{ border-radius: 18px; padding:18px; background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.14); box-shadow: var(--shadow-1) }
+    .step h3{ margin:0 0 8px; font-size:18px }
+
+    .card{ border-radius: var(--radius-xl); background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.14); box-shadow: var(--shadow-1); padding: 20px }
+
+    /* ------------------------------
+       Footer
+    ------------------------------ */
+    footer{ margin-top: 56px; border-top: 1px solid rgba(255,255,255,.14); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); padding: 22px 0; text-align:center; color: var(--muted) }
   </style>
 </head>
 <body>
   <header>
-    <h1>あなたのグループを診断します</h1>
-    <p>16タイプ性格診断でグループの相性を診断！</p>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>グループ相性診断</div>
+      </div>
+      <a class="btn" href="https://apps.apple.com/jp/app/%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E7%9B%B8%E6%80%A7%E8%A8%BA%E6%96%AD-16%E3%82%BF%E3%82%A4%E3%83%97%E6%80%A7%E6%A0%BC%E8%A8%BA%E6%96%AD%E3%81%A7%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E3%82%92%E6%8E%A1%E7%82%B9/id6739538706" target="_blank" rel="noopener">📲 App Storeでダウンロード</a>
+    </div>
   </header>
 
-  <main>
-    <section>
-      <h2>アプリ概要</h2>
-      <p>
-        最近話題の「16タイプ性格診断（MBTI）」を使って、<strong>あなたのグループをスコア化</strong>！
-        <br><br>
-        性格タイプをもとに、グループのバランス・相性・関係性を分析し、
-        <strong>レーダーチャート</strong>で可視化します。
-        <br><br>
-        友達や家族、恋人との相性を診断して、一緒に盛り上がろう！
-      </p>
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <h1 class="title">MBTIで <span>グループの相性</span> を診断。<br>バランスと関係性がひと目でわかる。</h1>
+          <p class="subtitle">16タイプ性格診断をもとに、グループのバランス・相性・関係性をスコア化。レーダーチャートで可視化し、結果はワンタップで共有できます。</p>
+          <div class="cta-row">
+            <a class="btn" href="https://apps.apple.com/jp/app/%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E7%9B%B8%E6%80%A7%E8%A8%BA%E6%96%AD-16%E3%82%BF%E3%82%A4%E3%83%97%E6%80%A7%E6%A0%BC%E8%A8%BA%E6%96%AD%E3%81%A7%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E3%82%92%E6%8E%A1%E7%82%B9/id6739538706" target="_blank" rel="noopener">📲 今すぐ診断する</a>
+            <span style="color:var(--muted)">無料 / iOS対応</span>
+          </div>
+        </div>
+        <div class="hero-card" data-tilt>
+          <div class="phone-mock">
+            <div class="phone-screen">
+              <!-- Minimal radar chart look with SVG -->
+              <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" aria-label="レーダーチャート">
+                <!-- grid circles -->
+                <g fill="none" stroke="rgba(255,255,255,.18)">
+                  <circle cx="150" cy="150" r="120"/>
+                  <circle cx="150" cy="150" r="90"/>
+                  <circle cx="150" cy="150" r="60"/>
+                  <circle cx="150" cy="150" r="30"/>
+                </g>
+                <!-- axes -->
+                <g stroke="rgba(255,255,255,.25)">
+                  <line x1="150" y1="30"  x2="150" y2="270"/>
+                  <line x1="30"  y1="150" x2="270" y2="150"/>
+                  <line x1="60"  y1="80"  x2="240" y2="220"/>
+                  <line x1="240" y1="80"  x2="60"  y2="220"/>
+                </g>
+                <!-- data polygon -->
+                <polygon points="150,55 235,145 205,220 95,235 60,150" fill="rgba(81,209,141,.55)" stroke="rgba(81,209,141,.95)" stroke-width="2"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
+    <!-- Features -->
     <section>
-      <h2>主な特徴</h2>
-      <div class="feature">
-        <strong>📊 レーダーチャートでグループの特徴を視覚化！</strong><br>
-        グループ全体の性格傾向やバランスがひと目で分かる！
-      </div>
-      <div class="feature">
-        <strong>👫 メンバー同士の相性を自動評価！</strong><br>
-        誰と誰が相性抜群？ それともちょっと注意？
-      </div>
-      <div class="feature">
-        <strong>🔗 診断結果を共有しよう！</strong><br>
-        シェア機能で結果を友達に送って盛り上がれる！
-      </div>
-      <div class="feature">
-        <strong>📚 タイプ一覧ページで性格タイプを即確認！</strong><br>
-        各タイプの特徴をいつでもチェック可能。
+      <h2><span class="bar"></span> 主な特徴</h2>
+      <div class="feature-grid">
+        <article class="feature" data-tilt>
+          <div class="feat-title">📊 レーダーチャートで特徴を可視化</div>
+          <p>グループ全体の性格傾向・バランスを一目で把握。強みと課題が見つかります。</p>
+        </article>
+        <article class="feature" data-tilt>
+          <div class="feat-title">👫 メンバー同士の相性を自動評価</div>
+          <p>相性の良いペア/注意が必要なペアを提示。関係性のヒントに。</p>
+        </article>
+        <article class="feature" data-tilt>
+          <div class="feat-title">🔗 診断結果をワンタップ共有</div>
+          <p>URLですぐにシェア。友達や家族、恋人と一緒に盛り上がれる。</p>
+        </article>
+        <article class="feature" data-tilt>
+          <div class="feat-title">📚 タイプ一覧で特徴をチェック</div>
+          <p>16タイプの説明をいつでも参照。理解が深まり、コミュニケーションがスムーズに。</p>
+        </article>
       </div>
     </section>
 
+    <!-- Steps -->
     <section>
-      <h2>こんな人におすすめ！</h2>
-      <p>
-        ✅ 友達との相性が気になる！<br>
-        ✅ グループの雰囲気を数値で見てみたい！<br>
-        ✅ 飲み会・旅行前のアイスブレイクに！<br>
-        ✅ 最近MBTI診断にハマっている！
-      </p>
+      <h2><span class="bar"></span> 使い方は3ステップ</h2>
+      <div class="steps">
+        <div class="step">
+          <h3>1. メンバーを追加</h3>
+          <p>グループを作成し、メンバーのタイプを登録します（入力補助あり）。</p>
+        </div>
+        <div class="step">
+          <h3>2. 自動診断</h3>
+          <p>グループのバランス・相性を自動でスコア化し、レーダーチャートで表示。</p>
+        </div>
+        <div class="step">
+          <h3>3. 共有＆活用</h3>
+          <p>結果を共有し、旅行や飲み会、チーム編成のアイスブレイクに活用。</p>
+        </div>
+      </div>
     </section>
-    <div style="text-align: center;">
-  <a
-    href="https://apps.apple.com/jp/app/%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E7%9B%B8%E6%80%A7%E8%A8%BA%E6%96%AD-16%E3%82%BF%E3%82%A4%E3%83%97%E6%80%A7%E6%A0%BC%E8%A8%BA%E6%96%AD%E3%81%A7%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E3%82%92%E6%8E%A1%E7%82%B9/id6739538706"
-    class="download-button"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    📲 App Storeでダウンロード
-  </a>
-</div>
 
+    <!-- About -->
+    <section>
+      <h2><span class="bar"></span> こんな人におすすめ</h2>
+      <div class="card">
+        <p>
+          ✅ 友達との相性を知りたい / グループの雰囲気を数値で見たい<br>
+          ✅ 旅行・飲み会前のアイスブレイクに使いたい<br>
+          ✅ 最近MBTI診断にハマっている
+        </p>
+      </div>
+    </section>
+
+    <!-- Centered CTA -->
+    <section style="text-align:center">
+      <a class="btn" href="https://apps.apple.com/jp/app/%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E7%9B%B8%E6%80%A7%E8%A8%BA%E6%96%AD-16%E3%82%BF%E3%82%A4%E3%83%97%E6%80%A7%E6%A0%BC%E8%A8%BA%E6%96%AD%E3%81%A7%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E3%82%92%E6%8E%A1%E7%82%B9/id6739538706" target="_blank" rel="noopener">📲 App Storeでダウンロード</a>
+    </section>
   </main>
 
   <footer>
     &copy; 2025 りょへとそたのアプリ製作所
   </footer>
+
+  <script>
+    // Lightweight 3D tilt interaction for cards & phone mock
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+    const tiltables = document.querySelectorAll('[data-tilt]');
+    tiltables.forEach(el => {
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        const cx = e.clientX - r.left; const cy = e.clientY - r.top;
+        const px = (cx / r.width) - .5;  // -0.5..0.5
+        const py = (cy / r.height) - .5;
+        const rx = clamp(-py * 8, -8, 8); // deg
+        const ry = clamp(px * 10, -10, 10);
+        el.style.setProperty('--rx', rx + 'deg');
+        el.style.setProperty('--ry', ry + 'deg');
+        el.style.setProperty('--x', (px*100+50)+'%');
+        el.style.setProperty('--y', (py*100+50)+'%');
+      });
+      el.addEventListener('pointerleave', () => {
+        el.style.setProperty('--rx', '0deg');
+        el.style.setProperty('--ry', '0deg');
+      });
+    });
+  </script>
 </body>
 </html>
