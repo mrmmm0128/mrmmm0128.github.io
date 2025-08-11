@@ -99,7 +99,15 @@
     .badge i{font-style:normal}
 
     .meta{margin-top:14px;color:var(--muted);font-size:14px;line-height:1.6}
-    .go{display:inline-flex;margin-top:14px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.14);color:#fff;text-decoration:none;font-weight:700;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.2)}
+    .go{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:12px 14px;border-radius:14px;font-weight:800;text-decoration:none;color:#fff;box-shadow:0 12px 24px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.18);transform:translateY(0);transition:transform .14s ease, box-shadow .2s ease}
+    .go:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(0,0,0,.30)}
+    .g1 .go{background:var(--grad-1);border:0}
+    .g2 .go{background:var(--grad-2);border:0}
+    .g3 .go{background:var(--grad-3);border:0}
+    .g4 .go{background:var(--grad-4);border:0;color:#0b0e17}
+    @media (prefers-color-scheme: light){
+      .g1 .go,.g2 .go,.g3 .go{color:#fff}
+    }
 
     .g1{background:linear-gradient(180deg, rgba(96,165,250,.18), transparent)}
     .g2{background:linear-gradient(180deg, rgba(34,197,94,.18), transparent)}
