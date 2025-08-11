@@ -87,7 +87,7 @@
        App Grid
     =============================== */
     .apps{padding:30px 0 8px}
-    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:16px;row-gap:12px}
     @media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:560px){.grid{grid-template-columns:1fr}}
 
@@ -99,7 +99,7 @@
     .badge i{font-style:normal}
 
     .meta{margin-top:14px;color:var(--muted);font-size:14px;line-height:1.6}
-    .go{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:12px 14px;border-radius:14px;font-weight:800;text-decoration:none;color:#fff;box-shadow:0 12px 24px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.18);transform:translateY(0);transition:transform .14s ease, box-shadow .2s ease}
+    .go{display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding:12px 14px;border-radius:14px;font-weight:800;text-decoration:none;color:#fff;box-shadow:0 12px 24px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.18);transform:translateY(0);transition:transform .14s ease, box-shadow .2s ease}
     .go:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(0,0,0,.30)}
     .g1 .go{background:var(--grad-1);border:0}
     .g2 .go{background:var(--grad-2);border:0}
