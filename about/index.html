@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>製作所について | りょへとそたのアプリ製作所</title>
+  <meta name="color-scheme" content="dark light">
+  <style>
+    /* ===============================
+       Design Tokens（LPと揃えています）
+    =============================== */
+    :root{
+      --bg:#07080c; --bg-2:#0b0e17; --text:#e9ecf3; --muted:#a6b0c3;
+      --glass:rgba(255,255,255,.06); --stroke:rgba(255,255,255,.14);
+      --ring:rgba(118, 186, 255, .45);
+      --shadow-1:0 10px 30px rgba(0,0,0,.35); --shadow-2:0 40px 80px rgba(0,0,0,.45);
+      --radius-xl:18px; --radius-2xl:26px;
+      --grad-1:linear-gradient(135deg,#7dd3fc,#60a5fa 40%,#a78bfa);
+      --grad-2:linear-gradient(135deg,#34d399,#22c55e 40%,#16a34a);
+      --grad-3:linear-gradient(135deg,#a78bfa,#8b5cf6 40%,#7c3aed);
+      --cta:linear-gradient(180deg,#4f8df7,#2661d6); --cta-press:#2558bd;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f7f9ff; --bg-2:#ecf2ff; --text:#0c1222; --muted:#57627a;
+        --glass:rgba(255,255,255,.7); --stroke:rgba(13,26,64,.12);
+        --shadow-1:0 12px 28px rgba(15,25,55,.18); --shadow-2:0 40px 80px rgba(15,25,55,.20);
+      }
+    }
+
+    /* Base */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 500px at 10% -10%, rgba(96,165,250,.18), transparent 40%),
+        radial-gradient(1000px 500px at 110% 0%, rgba(167,139,250,.16), transparent 40%),
+        linear-gradient(180deg,var(--bg),var(--bg-2));
+      overflow-x:hidden;
+    }
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+      background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+      background-size:38px 38px;mask-image:radial-gradient(900px 900px at 50% 0%,#000,transparent 70%)}
+    .container{max-width:1100px;margin-inline:auto;padding:0 24px}
+
+    /* Header */
+    header{position:sticky;top:0;z-index:50;backdrop-filter:saturate(160%) blur(14px);
+      background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02));
+      border-bottom:1px solid var(--stroke)}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.02em}
+    .logo{width:42px;height:42px;border-radius:12px;background:conic-gradient(from 220deg,#60a5fa,#a78bfa,#60a5fa);box-shadow:0 10px 25px rgba(96,165,250,.35),inset 0 1px 0 rgba(255,255,255,.3)}
+    .back{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;text-decoration:none;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)}
+
+    /* Hero */
+    .hero{padding:56px 0 32px}
+    .title{margin:0;font-size:clamp(26px,5vw,44px);line-height:1.1;font-weight:900}
+    .title span{background:linear-gradient(90deg,#7dd3fc,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{margin:14px 0 0;color:var(--muted);font-size:clamp(16px,2.6vw,18px);line-height:1.8}
+
+    /* Sections */
+    section{padding:30px 0}
+    h2{font-size:clamp(20px,3.2vw,28px);margin:0 0 14px;font-weight:900}
+    p{color:var(--muted);line-height:1.8;margin:0}
+
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    @media (max-width:860px){.grid{grid-template-columns:1fr}}
+
+    .card{position:relative;border-radius:var(--radius-2xl);overflow:hidden;padding:18px 16px;background:var(--glass);border:1px solid var(--stroke);box-shadow:var(--shadow-1)}
+    .card h3{margin:0 0 8px}
+
+    .list{display:grid;gap:10px;margin-top:8px}
+    .item{display:flex;gap:10px;align-items:flex-start}
+    .item i{font-style:normal}
+
+    .pill{display:inline-block;margin-top:12px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)}
+
+    /* Steps */
+    .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+    @media (max-width:960px){.steps{grid-template-columns:1fr 1fr;gap:12px}}
+    @media (max-width:520px){.steps{grid-template-columns:1fr}}
+    .step{background:var(--glass);border:1px solid var(--stroke);border-radius:16px;padding:14px;box-shadow:var(--shadow-1)}
+    .step h4{margin:0 0 6px;font-size:16px}
+
+    /* CTA */
+    .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 18px;border-radius:14px;font-weight:800;text-decoration:none;color:#fff;background:var(--cta);box-shadow:0 14px 28px rgba(38,97,214,.35),inset 0 1px 0 rgba(255,255,255,.18)}
+    .btn.alt{background:var(--grad-2)}
+
+    footer{margin-top:32px;border-top:1px solid var(--stroke);background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));padding:22px 0;text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>りょへとそたのアプリ製作所</div>
+      </div>
+      <a class="back" href="../" aria-label="ホームへ戻る">← ホームへ戻る</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="title">私たちは <span>“サクッと作りたい”</span> に寄り添います。</h1>
+      <p class="lead">「サクッとアプリ作りたいけど、ベンダーに頼むと高いし、今から勉強も億劫だ、、、」という思いに、私たちの小さなチームが伴走します。</p>
+    </section>
+
+    <!-- 特徴 -->
+    <section>
+      <h2>製作所の特徴</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>⚡ 小規模だから速い</h3>
+          <p>企画〜構築までをスリムな体制で一気通貫。意思決定が速く、検証と改善を素早く回せます。</p>
+        </article>
+        <article class="card">
+          <h3>👐 付きっ切りの伴走開発</h3>
+          <p>一つの案件に集中して開発。密なコミュニケーションで、曖昧なところはその場で解消します。</p>
+        </article>
+        <article class="card">
+          <h3>🧩 Flutter × Firebase</h3>
+          <p>確立されたモバイル×BaaSスタックで、<span class="pill">素早い検証</span> と <span class="pill">堅実な構築</span> を両立します。</p>
+        </article>
+        <article class="card">
+          <h3>💸 お手頃に、気軽に</h3>
+          <p>小回りの利く体制と再利用可能な基盤で、他社よりも頼みやすい価格感を目指します。</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- こんなお客様に良いかも -->
+    <section>
+      <h2>こんなお客様にとって「いいかも」</h2>
+      <div class="card">
+        <div class="list">
+          <div class="item"><i>✅</i><p>アプリを作りたいが、まず依頼するのが気が重い…</p></div>
+          <div class="item"><i>✅</i><p>イメージが固まっていないので、たくさん検証して形にしたい</p></div>
+          <div class="item"><i>✅</i><p>親身にコミュニケーションしてくれるエンジニアにお願いしたい</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 進め方（例） -->
+    <section>
+      <h2>進め方（例）</h2>
+      <div class="steps">
+        <div class="step"><h4>1. 初回ヒアリング</h4><p>背景・目的・想定ユーザー・優先順位をざっくり共有。</p></div>
+        <div class="step"><h4>2. ラフ要件＆見積</h4><p>スコープを粗く決め、開発方針と概算をすり合わせ。</p></div>
+        <div class="step"><h4>3. 小さく試作</h4><p>まずは触れるものを。良し悪しを早く確認。</p></div>
+        <div class="step"><h4>4. 本実装</h4><p>優先度順に機能を積み上げ、都度レビュー。</p></div>
+        <div class="step"><h4>5. リリース＆運用</h4><p>公開後の改善や保守も寄り添って対応。</p></div>
+      </div>
+      <p style="margin-top:10px;color:var(--muted)">※上記は一例です。ご状況に応じて柔軟にアレンジします。</p>
+    </section>
+
+    <!-- 技術スタック（簡易） -->
+    <section>
+      <h2>よく使う技術</h2>
+      <div class="grid">
+        <article class="card"><h3>Flutter</h3><p>iOS/Androidを1コードベースで素早く実装。モダンなUIと高い生産性。</p></article>
+        <article class="card"><h3>Firebase</h3><p>Auth / Firestore / Cloud Functions / Cloud Messaging などを組み合わせ、バックエンドを軽量に。</p></article>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section>
+      <h2>まずは気軽にご相談ください</h2>
+      <div class="cta">
+        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link" target="_blank" rel="noopener">📩 お問い合わせ</a>
+        <a class="btn alt" href="https://docs.google.com/forms/d/e/1FAIpQLSfHpmSHm5SBAARgemK39rfeWldmxmLPmfFU0BM1uuUXWYX3Hw/viewform?usp=sf_link" target="_blank" rel="noopener">🧾 お見積りを依頼</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 りょへとそたのアプリ製作所
+  </footer>
+</body>
+</html>
