@@ -3,160 +3,308 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>みんなでワリカン</title>
+  <title>みんなでワリカン – 旅行や遊びの必須アプリ</title>
+  <meta name="color-scheme" content="light dark">
   <style>
-    body {
-      background-color: #f0f8ff;
-      color: #0d47a1;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
+    /* ------------------------------
+       Design Tokens
+    ------------------------------ */
+    :root {
+      --bg: #0a1024;                 /* page base */
+      --bg-alt: #0d1938;             /* darker depth */
+      --card: rgba(255,255,255,.08); /* glass */
+      --text: #e6f0ff;
+      --muted: #b8c6e3;
+      --brand-1: #5ab6ff;            /* primary accent */
+      --brand-2: #8aa5ff;            /* secondary accent */
+      --cta: #4e8df7;                /* button base */
+      --cta-press: #3b73d8;
+      --ring: rgba(138,165,255,.6);  /* focus ring */
+      --shadow-1: 0 10px 30px rgba(14, 25, 67, .45);
+      --shadow-2: 0 30px 60px rgba(14, 25, 67, .45);
+      --radius-xl: 20px;
+      --radius-2xl: 28px;
     }
 
-    header {
-      background-color: #0d47a1;
-      color: #fff;
-      padding: 30px 20px;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2.4rem;
-    }
-
-    main {
-      padding: 40px 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    section {
-      margin-bottom: 50px;
-    }
-
-    h2 {
-      border-left: 6px solid #2196f3;
-      padding-left: 10px;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1.1rem;
-      line-height: 1.7;
-    }
-
-    .feature {
-      background-color: #e3f2fd;
-      border-left: 4px solid #2196f3;
-      padding: 16px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-    }
-
-    footer {
-      background-color: #0d47a1;
-      color: white;
-      text-align: center;
-      padding: 16px;
-    }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.8rem;
+    @media (prefers-color-scheme: light) {
+      :root{
+        --bg: #f2f7ff;
+        --bg-alt: #e8f0ff;
+        --card: rgba(255,255,255,.7);
+        --text: #0d1b2a;
+        --muted: #435573;
+        --brand-1: #1976d2;
+        --brand-2: #2e7dd9;
+        --cta: #0d47a1;
+        --cta-press: #0b3a86;
+        --ring: rgba(33, 150, 243, .4);
       }
     }
 
-    .download-button {
-    display: inline-block;
-    padding: 16px 32px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    background-color: #0d47a1;
-    color: white;
-    text-decoration: none;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(13, 71, 161, 0.3);
-    transition: transform 0.2s, box-shadow 0.3s;
-  }
+    /* ------------------------------
+       Base & Layout
+    ------------------------------ */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+      color:var(--text);
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(90,182,255,.18), transparent),
+                  radial-gradient(900px 500px at 90% 0%, rgba(138,165,255,.16), transparent),
+                  linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+      overflow-x:hidden;
+    }
 
-  .download-button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(13, 71, 161, 0.5);
-    background-color: #1565c0;
-  }
+    /* Subtle grid to add depth */
+    body::before{
+      content:"";
+      position:fixed; inset:0; pointer-events:none; z-index:-1;
+      background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(800px 800px at 50% 0%, black, transparent 70%);
+    }
 
-  .download-button:active {
-    transform: translateY(1px);
-    box-shadow: 0 4px 8px rgba(13, 71, 161, 0.2);
-  }
+    .container{max-width:1080px; margin-inline:auto; padding-inline:24px}
+
+    /* ------------------------------
+       Header / Hero
+    ------------------------------ */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: saturate(180%) blur(14px);
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+      border-bottom: 1px solid rgba(255,255,255,.14);
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; height:72px}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.02em}
+    .brand .logo{
+      width:42px; height:42px; border-radius:12px;
+      background: conic-gradient(from 230deg, var(--brand-1), var(--brand-2), var(--brand-1));
+      box-shadow: 0 10px 25px rgba(90,182,255,.35), inset 0 1px 0 rgba(255,255,255,.3);
+    }
+
+    .hero{position:relative; padding:56px 0 32px}
+    .hero-grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:28px; align-items:center}
+    @media (max-width: 880px){ .hero-grid{grid-template-columns:1fr; gap:22px} }
+
+    .title{font-size: clamp(28px, 5vw, 48px); line-height:1.1; margin:0 0 14px; font-weight:900}
+    .title span{ background: linear-gradient(90deg, var(--brand-1), var(--brand-2)); -webkit-background-clip:text; background-clip:text; color:transparent }
+    .subtitle{color:var(--muted); font-size: clamp(15px, 2.4vw, 18px); margin:0 0 26px}
+
+    .cta-row{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:14px 20px; border-radius:14px; font-weight:700; text-decoration:none; color:#fff;
+      background: linear-gradient(180deg, var(--cta), #174aa7);
+      box-shadow: 0 12px 24px rgba(13,71,161,.35), inset 0 1px 0 rgba(255,255,255,.2);
+      transform: translateY(0); transition: transform .18s ease, box-shadow .2s ease;
+    }
+    .btn:hover{ transform: translateY(-3px); box-shadow: 0 18px 36px rgba(13,71,161,.45) }
+    .btn:active{ transform: translateY(1px); background: var(--cta-press); box-shadow: 0 8px 16px rgba(13,71,161,.3) }
+
+    .hero-card{
+      position:relative; border-radius: var(--radius-2xl);
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: var(--shadow-2);
+      padding: 26px; overflow:hidden; transform-style: preserve-3d;
+    }
+    .hero-card::before{
+      content:""; position:absolute; inset:-2px; border-radius: inherit;
+      background: radial-gradient(800px 240px at 20% -10%, rgba(90,182,255,.28), transparent 40%),
+                  radial-gradient(700px 220px at 120% 0%, rgba(138,165,255,.22), transparent 40%);
+      z-index:0;
+    }
+
+    .phone-mock{
+      position:relative; z-index:1; width:100%; aspect-ratio: 9/19;
+      border-radius: 34px; padding:18px; margin:auto; background: linear-gradient(180deg, #0a1024, #121a33);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 20px 40px rgba(5,10,30,.6);
+      transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+      transition: transform .15s ease-out;
+    }
+    .phone-screen{
+      border-radius: 24px; height:100%; background:
+        radial-gradient(600px 300px at 20% -10%, rgba(90,182,255,.12), transparent 30%),
+        linear-gradient(180deg, #101b3a, #0c1430);
+      border:1px solid rgba(255,255,255,.1);
+      display:flex; align-items:center; justify-content:center; color:#eaf2ff; font-weight:700;
+      letter-spacing:.03em;
+    }
+
+    /* ------------------------------
+       Sections
+    ------------------------------ */
+    section{ padding: 42px 0 }
+    h2{
+      font-size: clamp(22px, 3.2vw, 28px); margin:0 0 20px; font-weight:800;
+      display:flex; align-items:center; gap:10px;
+    }
+    h2 .bar{ display:inline-block; width:10px; height:26px; border-radius:4px; background: linear-gradient(180deg, var(--brand-1), var(--brand-2)); box-shadow: 0 8px 20px rgba(90,182,255,.35) }
+    p{ color:var(--muted); font-size: clamp(15px, 2.4vw, 17px); line-height:1.8; margin:0 }
+
+    .feature-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:18px; margin-top:18px }
+    @media (max-width: 1000px){ .feature-grid{ grid-template-columns: repeat(2, 1fr) } }
+    @media (max-width: 560px){ .feature-grid{ grid-template-columns: 1fr } }
+
+    .feature{
+      position:relative; border-radius: 18px; padding:18px 16px; overflow:hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow-1);
+      transform: translateZ(0); transition: transform .15s ease, box-shadow .2s ease;
+    }
+    .feature:hover{ transform: translateY(-4px); box-shadow: 0 16px 36px rgba(14, 25, 67, .55) }
+    .feature::after{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(400px 160px at var(--x, 20%) var(--y, 20%), rgba(90,182,255,.25), transparent 40%);
+      opacity:.9; transition: background-position .08s linear;
+    }
+    .feat-title{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.02em; margin-bottom:8px }
+    .badge{ font-size:12px; padding:4px 8px; border-radius:999px; background: rgba(90,182,255,.18); border:1px solid rgba(90,182,255,.35); color:#d9e7ff }
+
+    .card{
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow-1);
+      padding: 20px;
+    }
+
+    /* ------------------------------
+       Footer
+    ------------------------------ */
+    footer{
+      margin-top: 56px;
+      border-top: 1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      padding: 22px 0; text-align:center; color: var(--muted);
+    }
+
+    /* ------------------------------
+       A11y & Motion
+    ------------------------------ */
+    .btn:focus-visible, a:focus-visible, button:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring) }
+    @media (prefers-reduced-motion: reduce){
+      .btn, .feature{ transition:none }
+      .phone-mock{ transition:none }
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>みんなでワリカン</h1>
-    <p>旅行や遊びの必須アプリ！</p>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>みんなでワリカン</div>
+      </div>
+      <a class="btn" href="https://apps.apple.com/jp/app/%E3%81%BF%E3%82%93%E3%81%AA%E3%81%A7%E3%83%AF%E3%83%AA%E3%82%AB%E3%83%B3-%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E3%81%94%E3%81%A8%E3%81%AB%E6%94%AF%E6%89%95%E3%81%84%E7%AE%A1%E7%90%86/id6738672960" target="_blank" rel="noopener noreferrer">📲 App Storeでダウンロード</a>
+    </div>
   </header>
 
-  <main>
-    <section>
-      <h2>アプリ概要</h2>
-      <p>
-        旅行や遊び、飲み会の場面で活躍する割り勘アプリ「<strong>みんなでワリカン</strong>」。
-        <br><br>
-        グループでお出かけしたとき、
-        <em>「あれ、私いくら払った？」</em>や
-        <em>「誰にいくら返せばいい？」</em>という悩みを解決します！
-        <br><br>
-        一度グループを作れば、次の旅行でも簡単に支払いを管理！
-        お金のことはこのアプリに任せて、楽しい時間を思いっきり楽しみましょう。
-      </p>
-    </section>
-
-    <section>
-      <h2>主な機能</h2>
-      <div class="feature">
-        <strong>✅ 複数の旅行・飲み会を固定メンバーで管理！</strong><br>
-        毎回名前を入力する手間なし。履歴も残る！
-      </div>
-      <div class="feature">
-        <strong>✅ 支払入力のリンク共有！</strong><br>
-        グループ内で支払画面をURLで共有。みんなで簡単に入力可能！
-      </div>
-      <div class="feature">
-        <strong>✅ 支払い提案で精算が楽に！</strong><br>
-        次の支払額を自動で提案。建て替え返金が最小限に！
-      </div>
-      <div class="feature">
-        <strong>✅ 外貨対応！</strong><br>
-        為替レートをAPIでリアルタイム取得。海外旅行にも対応！
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <h1 class="title">旅行や飲み会の精算は <span>ぜんぶ自動</span>。<br>グループでカンタン割り勘。</h1>
+          <p class="subtitle">固定メンバーで複数の旅行・飲み会をサクッと管理。URL共有で各自が支払入力、アプリが次の支払いをスマートに提案します。</p>
+          <div class="cta-row">
+            <a class="btn" href="https://apps.apple.com/jp/app/%E3%81%BF%E3%82%93%E3%81%AA%E3%81%A7%E3%83%AF%E3%83%AA%E3%82%AB%E3%83%B3-%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E3%81%94%E3%81%A8%E3%81%AB%E6%94%AF%E6%89%95%E3%81%84%E7%AE%A1%E7%90%86/id6738672960" target="_blank" rel="noopener">📲 今すぐダウンロード</a>
+            <span style="color:var(--muted)">無料 / iOS対応</span>
+          </div>
+        </div>
+        <div class="hero-card tilt" data-tilt>
+          <div class="phone-mock">
+            <div class="phone-screen">みんなでワリカン</div>
+          </div>
+        </div>
       </div>
     </section>
 
+    <!-- Overview -->
     <section>
-      <h2>グループ作成のメリット</h2>
-      <p>
-        家族・友人・恋人との思い出を、もっと便利に、もっと楽しく！
-        <br><br>
-        過去の割り勘履歴も振り返れるので、<em>「あのとき誰がいくら払った？」</em>なんて心配はもういりません。
-      </p>
+      <h2><span class="bar"></span> アプリ概要</h2>
+      <div class="card">
+        <p>
+          旅行や遊び、飲み会の場面で活躍する割り勘アプリ「<strong>みんなでワリカン</strong>」。
+          <br><br>
+          グループでお出かけしたとき、<em>「あれ、私いくら払った？」</em>や<em>「誰にいくら返せばいい？」</em>という悩みを解決します！
+          <br><br>
+          一度グループを作れば、次の旅行でも簡単に支払いを管理。お金のことはこのアプリに任せて、楽しい時間を思いっきり楽しみましょう。
+        </p>
+      </div>
     </section>
-        <div style="text-align: center; margin-top: 40px;">
-      <a
-        href="https://apps.apple.com/jp/app/%E3%81%BF%E3%82%93%E3%81%AA%E3%81%A7%E3%83%AF%E3%83%AA%E3%82%AB%E3%83%B3-%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E3%81%94%E3%81%A8%E3%81%AB%E6%94%AF%E6%89%95%E3%81%84%E7%AE%A1%E7%90%86/id6738672960"
-        class="download-button"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        📲 App Storeでダウンロード
-      </a>
-    </div>
 
+    <!-- Features -->
+    <section>
+      <h2><span class="bar"></span> 主な機能</h2>
+      <div class="feature-grid">
+        <article class="feature" data-tilt>
+          <div class="feat-title">✅ 複数の旅行・飲み会を固定メンバーで管理</div>
+          <p>毎回名前を入力する手間なし。履歴も自動でまとまるから、次のイベントもスムーズ。</p>
+        </article>
+        <article class="feature" data-tilt>
+          <div class="feat-title">🔗 支払入力のリンク共有</div>
+          <p>グループ内で支払画面をURLで共有。みんなで簡単に入力でき、リアルタイムに反映。</p>
+        </article>
+        <article class="feature" data-tilt>
+          <div class="feat-title">💡 支払い提案で精算が楽に</div>
+          <p>建て替え返金が最小になるよう次の支払いを自動提案。面倒な計算はアプリにお任せ。</p>
+        </article>
+        <article class="feature" data-tilt>
+          <div class="feat-title">🌍 外貨対応</div>
+          <p>為替レートをAPIで取得し自動換算。海外旅行でも安心して割り勘できます。</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Benefits -->
+    <section>
+      <h2><span class="bar"></span> グループ作成のメリット</h2>
+      <div class="card">
+        <p>
+          家族・友人・恋人との思い出を、もっと便利に、もっと楽しく！
+          <br><br>
+          過去の割り勘履歴も振り返れるので、<em>「あのとき誰がいくら払った？」</em>なんて心配はもういりません。
+        </p>
+      </div>
+    </section>
+
+    <!-- Centered CTA -->
+    <section style="text-align:center">
+      <a class="btn" href="https://apps.apple.com/jp/app/%E3%81%BF%E3%82%93%E3%81%AA%E3%81%A7%E3%83%AF%E3%83%AA%E3%82%AB%E3%83%B3-%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E3%81%94%E3%81%A8%E3%81%AB%E6%94%AF%E6%89%95%E3%81%84%E7%AE%A1%E7%90%86/id6738672960" target="_blank" rel="noopener">📲 App Storeでダウンロード</a>
+    </section>
   </main>
 
   <footer>
     &copy; 2025 りょへとそたのアプリ製作所
   </footer>
+
+  <script>
+    // Lightweight 3D tilt for cards & phone mock
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+    const tiltables = document.querySelectorAll('[data-tilt]');
+    tiltables.forEach(el => {
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        const cx = e.clientX - r.left; const cy = e.clientY - r.top;
+        const px = (cx / r.width) - .5;  // -0.5..0.5
+        const py = (cy / r.height) - .5;
+        const rx = clamp(-py * 8, -8, 8); // deg
+        const ry = clamp(px * 10, -10, 10);
+        el.style.setProperty('--rx', rx + 'deg');
+        el.style.setProperty('--ry', ry + 'deg');
+        el.style.setProperty('--x', (px*100+50)+'%');
+        el.style.setProperty('--y', (py*100+50)+'%');
+      });
+      el.addEventListener('pointerleave', () => {
+        el.style.setProperty('--rx', '0deg');
+        el.style.setProperty('--ry', '0deg');
+      });
+    });
+  </script>
 </body>
 </html>
