@@ -84,6 +84,26 @@
       background: conic-gradient(from 230deg, var(--brand-1), var(--brand-2), var(--brand-1));
       box-shadow: 0 10px 25px rgba(90,182,255,.35), inset 0 1px 0 rgba(255,255,255,.3);
     }
+    /* SVGが枠いっぱいに伸びるように */
+.phone-img{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+/* 端末幅に応じて見切れないサイズ感に */
+.phone-mock{
+  max-width: 360px;   /* 好みで 320〜420px などに調整可 */
+  width: 100%;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* 古いブラウザの保険（aspect-ratio非対応） */
+@supports not (aspect-ratio: 1 / 1){
+  .phone-mock{ height: 440px; }
+}
+
 
     .hero{position:relative; padding:56px 0 32px}
     .hero-grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:28px; align-items:center}
